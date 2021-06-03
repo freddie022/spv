@@ -5,6 +5,7 @@ from spv.utils.utils import conversion_valor, parse_fecha_movimientos
 class Movimientos(ResumenParser):
     def __init__(self, mark: str = 'visa'):
         super().__init__(mark)
+        self.tarjeta = ''
         self.actions = {
             "visa": {
                 '027502': self.detalle_cinco_dos,
@@ -12,7 +13,6 @@ class Movimientos(ResumenParser):
                 '027505': self.detalle_cinco_cinco
             }
         }
-        self.tarjeta = ''
 
     def build(self, linea, parent):
         try:
@@ -29,8 +29,10 @@ class Movimientos(ResumenParser):
         consumos['fecha_origen'] = parse_fecha_movimientos(linea[6:12])
         consumos['numero_tc'] = linea[24:28]
         consumos['detalle_de_transaccion'] = linea[28:71]
-        consumos['importe_en_pesos'] = conversion_valor(linea[78:91], linea[91:92])
-        consumos['importe_en_dolares'] = conversion_valor(linea[92:105], linea[105:106])
+        consumos['importe_en_pesos'] = conversion_valor(
+            linea[78:91], linea[91:92])
+        consumos['importe_en_dolares'] = conversion_valor(
+            linea[92:105], linea[105:106])
         consumos['comprobante'] = linea[71:77]
         consumos['codigo_operacion'] = linea[139:143]
         self.current_key = 'pesos'
@@ -41,8 +43,10 @@ class Movimientos(ResumenParser):
         sub_totales = {}
         sub_totales['numero_tc'] = linea[24:28]
         sub_totales['descripcion_subtotal_tc'] = linea[28:78]
-        sub_totales['subtotal_importe_en_pesos'] = conversion_valor(linea[78:91], linea[91:92])
-        sub_totales['subtotal_importe_dolares'] = conversion_valor(linea[92:105], linea[105:106])
+        sub_totales['subtotal_importe_en_pesos'] = conversion_valor(
+            linea[78:91], linea[91:92])
+        sub_totales['subtotal_importe_dolares'] = conversion_valor(
+            linea[92:105], linea[105:106])
         self.current_key = 'subtotales'
         self.tarjeta = sub_totales['numero_tc']
         return sub_totales
@@ -52,8 +56,10 @@ class Movimientos(ResumenParser):
         consumos['fecha_origen'] = parse_fecha_movimientos(linea[6:12])
         consumos['numero_tc'] = linea[24:28]
         consumos['detalle_de_transaccion'] = linea[28:78]
-        consumos['importe_en_pesos'] = conversion_valor(linea[78:91], linea[91:92])
-        consumos['importe_en_dolares'] = conversion_valor(linea[92:105], linea[105:106])
+        consumos['importe_en_pesos'] = conversion_valor(
+            linea[78:91], linea[91:92])
+        consumos['importe_en_dolares'] = conversion_valor(
+            linea[92:105], linea[105:106])
         consumos['comprobante'] = linea[71:77]
         consumos['codigo_operacion'] = linea[139:143]
         self.current_key = 'moneda_extranjera'

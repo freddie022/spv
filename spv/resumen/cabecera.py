@@ -14,7 +14,7 @@ class Cabecera(ResumenParser):
                 '0271': self.cabecera_uno,
                 '0272': self.cabecera_dos,
                 '027D': self.cabecera_d
-            }
+            },
         }
 
     def build(self, linea, parent):
